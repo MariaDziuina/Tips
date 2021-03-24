@@ -65,6 +65,11 @@ gt=gt.sort_values(by=['event_number',
                   ascending=[True, False, False, False, True, False])
 
 
+# заливка в sql таблицу
+engine=get_engine()
+way.to_sql('games_order', con=engine, if_exists='replace')
+
+
 # Подсказки Ромы
 # работа с pandas
 # все нормальные параметры для группировки
@@ -84,3 +89,5 @@ res=df1.merge(df2, 'left', on='device_id', suffixes=('_lft', '_rght'))
 pd.set_option('display.float_format', lambda x: '%.3f' % x)
 pd.options.display.float_format = '${:,.2f}'.format
 df['cost'] = df['cost'].map('${:,.2f}'.format)
+
+

@@ -31,6 +31,10 @@ rcParams['figure.figsize'] = 12, 9
 %load_ext jupyternotify
 
 
+#преобразование в float
+strg['fd_starts']=strg['fd_starts'].astype('float') 
+
+
 #группировка и подсчет количества юзеров
 gt=ds[(ds['is_game_start']==1)].groupby(['platform',
              'lang',

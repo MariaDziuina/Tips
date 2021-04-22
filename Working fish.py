@@ -95,3 +95,4 @@ pd.options.display.float_format = '${:,.2f}'.format
 df['cost'] = df['cost'].map('${:,.2f}'.format)
 
 
+pd.pivot_table(games_prop['kind'], games_prop['time_to_win'])

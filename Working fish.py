@@ -31,6 +31,8 @@ rcParams['figure.figsize'] = 12, 9
 %load_ext jupyternotify
 
 
+print(df.info())
+
 #преобразование в float
 strg['fd_starts']=strg['fd_starts'].astype('float') 
 
@@ -113,7 +115,9 @@ def prep_gr_word_cloud(words_df, group, n):
         (words_df['index']!='no')&(words_df['index']!='info')
             ][['index', 'words']].set_index('index').to_dict()['words']
     return common
-# функция строит облако слов и сохраняет её в файл
+
+  
+  # функция строит облако слов и сохраняет её в файл
 # для работы нужно pip install wordcloud
 # https://github.com/amueller/word_cloud
 def write_cloud(dct, file):
@@ -129,3 +133,48 @@ def write_cloud(dct, file):
     plt.tight_layout()
     plt.savefig(file, format="png")
 #     plt.show()
+
+
+
+# ГРАФИКИ
+
+
+
+
+
+
+# Работа с NULL
+tb_g['event_time']=tb_g['event_time'].fillna('Unknown')
+
+panda is null
+
+
+
+
+
+
+
+ # Убираем дубликаты
+  pl['platform']=pl['platform'].fillna('0')
+  
+  # Работа с NULL
+  panda is null
+  
+  # Меняем тип данных
+  pl['user_id']=pl['user_id'].astype('Int64')
+  
+  
+  # Отладка соединения таблиц
+  
+  pur2.groupby(['_merge']).agg(
+                {
+                    'user_id': lambda x: x.nunique(),
+                }).reset_index()
+  
+  t=pur2[(pur2['_merge']=='left_only')].groupby(['user_id']).agg(
+                {
+                    'transaction_time': lambda x: x.nunique(),
+                }).reset_index()
+  
+  len(t[(t['transaction_time']>1)])
+  

@@ -31,6 +31,16 @@ rcParams['figure.figsize'] = 12, 9
 %load_ext jupyternotify
 
 
+# google
+
+# забираем данные из google doc
+
+
+# заливка в гугл док
+
+
+
+# Информация о data frame
 print(df.info())
 
 #преобразование в float
@@ -149,13 +159,27 @@ tb_g['event_time']=tb_g['event_time'].fillna('Unknown')
 panda is null
 
 
+# Смена индекса
+prs=prf.sort_values(by=['game_time'], 
+                  ascending=[True]).reset_index()
+
+prs['index']=prs.index
 
 
+# Преобразование столбца df в список
+ages_df=prf[['child_age']].sort_values( by = ['child_age'], ascending=[True]).drop_duplicates()
+ages=ages_df['child_age'].to_list()
+ages
 
 
 
  # Убираем дубликаты
   pl['platform']=pl['platform'].fillna('0')
+  
+  # убираем дубликаты
+  main_df_user=main_df[(main_df['first_game_played']!='Not a game')][['user_id', 'first_pur_date', 'platform','lang','child_age',
+                      'total_games', 'total_victories', 'total_exits', 'total_unfocuses'
+                     ]].drop_duplicates()
   
   # Работа с NULL
   panda is null

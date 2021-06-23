@@ -43,6 +43,9 @@ rcParams['figure.figsize'] = 12, 9
 # Информация о data frame
 print(df.info())
 
+# сводная статистика по df
+df.describe()
+
 #преобразование в float
 strg['fd_starts']=strg['fd_starts'].astype('float') 
 
@@ -184,12 +187,15 @@ ages
   # Работа с NULL
   panda is null
   
+  
+  
   # Меняем тип данных
   pl['user_id']=pl['user_id'].astype('Int64')
   
   
-  # Отладка соединения таблиц
   
+  
+  # Отладка соединения таблиц
   pur2.groupby(['_merge']).agg(
                 {
                     'user_id': lambda x: x.nunique(),
@@ -201,4 +207,28 @@ ages
                 }).reset_index()
   
   len(t[(t['transaction_time']>1)])
+  
+  
+  # создание таблицы в цикле
+ paths=[]
+for user in user_list:
+    table=get_usertable(df=ds, user=user)
+    paths.append(get_path(table))
+  
+  #функция, которая создает таблицы для каждого юзера с определенными фильтрами
+def get_usertable(df, user):
+    table=df[(df['is_game_start']==1)&
+        (df['event_number']<=5)&
+        (df['user_id']==user)]
+    return table
+
+#функция, которая создает список из пользовательских путей, как элементов списка 
+def get_path(df):
+    result=''
+    df=df.sort_values(by='event_number')
+    for game in df['game_name'].values:
+        result=result+game+" - "
+    #убираем три последних символа для того, чтобы полученная строка не заканчивалась на пробел-дефис-пробел
+    return result[:-3]
+
   

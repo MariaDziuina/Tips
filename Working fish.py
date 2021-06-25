@@ -232,3 +232,15 @@ def get_path(df):
     return result[:-3]
 
   
+  
+ # функция которая выдает процентный интервал для выборки
+def interval_binom(n, p, confidence):
+    import scipy.stats
+    import math
+    # доверительный интервал биноминального распределения
+    h = scipy.stats.t.interval(confidence, n-1, loc=0, scale=1)[1]*math.sqrt((p*(1-p))/n)
+    return h
+  
+  # пример
+  interval_binom(185, 0.7, 0.9)
+

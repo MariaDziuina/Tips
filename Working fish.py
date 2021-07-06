@@ -52,6 +52,9 @@ strg['fd_starts']=strg['fd_starts'].astype('float')
 # исключить нули
 df_vals = df_vals[~df_vals['education'].isnull()] 
 
+# посчитать количество нулей в каждом столбце
+df.isna().sum()
+
 # выбрать столбцы по номерам (до второго, т.е. 0 и 1)
 df1 = df.iloc[:, 0:2]
 

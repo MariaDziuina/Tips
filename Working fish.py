@@ -49,6 +49,12 @@ df.describe()
 #преобразование в float
 strg['fd_starts']=strg['fd_starts'].astype('float') 
 
+# исключить нули
+df_vals = df_vals[~df_vals['education'].isnull()] 
+
+# выбрать столбцы по номерам (до второго, т.е. 0 и 1)
+df1 = df.iloc[:, 0:2]
+
 
 #группировка и подсчет количества юзеров
 gt=ds[(ds['is_game_start']==1)].groupby(['platform',

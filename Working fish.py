@@ -38,7 +38,8 @@ rcParams['figure.figsize'] = 12, 9
 
 # заливка в гугл док
 
-
+# фильтр на null
+df=df[(pd.isnull(df['field'])==False)]
 
 # Информация о data frame
 print(df.info())

@@ -31,12 +31,28 @@ rcParams['figure.figsize'] = 12, 9
 %load_ext jupyternotify
 
 
+
 # google
-
 # забираем данные из google doc
-
+games_params=gd.read('1o0DP_VYgpt3RRsFr5CTE3kq_A1zs80iyyDIBnm8HpyM', "Games!A2:ZZ500")
+cols=gd.read('1o0DP_VYgpt3RRsFr5CTE3kq_A1zs80iyyDIBnm8HpyM', "Games!A1:ZZ1")
+games_params.columns=cols.values[0]
 
 # заливка в гугл док
+url='1qg2qghHUggPFhRBVq1vtXobBJDNPdSHAbeknVSMpo4g'
+gd.write(url, "A_technical!A2:ZZ5000", a_df)
+gd.write(url, "B_gd!A2:ZZ5000", b_df)
+gd.write(url, "C_prod!A2:ZZ5000", c_df)
+
+
+
+
+# заливка в sql
+%%time
+engine=get_engine()
+games_params.to_sql('game_params', con=engine, if_exists='replace', index=False, schema='dash')
+
+
 
 # фильтр на null
 df=df[(pd.isnull(df['field'])==False)]

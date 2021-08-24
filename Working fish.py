@@ -44,6 +44,7 @@ gd.write(url, "A_technical!A2:ZZ5000", a_df)
 gd.write(url, "B_gd!A2:ZZ5000", b_df)
 gd.write(url, "C_prod!A2:ZZ5000", c_df)
 
+# Загрузка csv
 
 
 

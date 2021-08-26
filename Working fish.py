@@ -115,6 +115,9 @@ gt=gt.sort_values(by=['event_number',
 engine=get_engine()
 way.to_sql('games_order', con=engine, if_exists='replace')
 
+# Заменить значения в столбце
+dig["level"] = dig["level"].str.replace('Tutorial', '0')
+
 
 # Подсказки Ромы
 # работа с pandas

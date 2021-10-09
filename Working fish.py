@@ -192,7 +192,7 @@ comp=comp[['Platform', 'Exception', 'Exception_share', 'Exception_share_old', 'C
 
 # ГРАФИКИ
 
-
+# barplot 
 
 
 

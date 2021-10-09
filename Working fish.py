@@ -178,6 +178,17 @@ def write_cloud(dct, file):
 #     plt.show()
 
 
+# создаем переменную по резульататам сравнения
+conditions = [ (comp['Exception_share_old']>comp['Exception_share']) & (comp['_merge'].eq('both')),
+              (comp['Exception_share_old']<=comp['Exception_share']) & (comp['_merge'].eq('both')),
+              comp['_merge'].eq('left_only'),
+              comp['_merge'].eq('right_only')   
+]
+choices = ['got better', 'same situation', 'new exception', 'good']
+comp['Conclusion']=np.select(conditions, choices, default='no')
+comp=comp[['Platform', 'Exception', 'Exception_share', 'Exception_share_old', 'Conclusion']]
+
+
 
 # ГРАФИКИ
 

@@ -195,6 +195,14 @@ comp=comp[['Platform', 'Exception', 'Exception_share', 'Exception_share_old', 'C
 # barplot 
 
 
+# distribution
+sns.set_theme(style="darkgrid")
+tbl=intro_tbl[(intro_tbl['game_name']=='Ghosts')]
+g = sns.displot(data=tbl, x="playtime", kde=True, binwidth=1, height=7, facet_kws=dict(margin_titles=True))
+g.set(xlabel='Cutscene Time',
+       ylabel='N Game Starts',
+       title='Cutscene Time Distribution Ghosts')
+
 
 
 # Работа с NULL

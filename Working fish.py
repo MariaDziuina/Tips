@@ -241,6 +241,8 @@ ages
   # Меняем тип данных
   pl['user_id']=pl['user_id'].astype('Int64')
   
+  renewal['first_pur_date'] = pd.to_datetime(renewal['first_pur_date'])
+  
   
   
   

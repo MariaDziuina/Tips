@@ -143,9 +143,7 @@ df['cost'] = df['cost'].map('${:,.2f}'.format)
 pd.pivot_table(games_prop['kind'], games_prop['time_to_win'])
 
 # переименовываем колонку с названием игры
-games['game_name']=games['game']
-games=games.drop('game', 1)
-
+df.rename(columns={'oldName1': 'newName1', 'oldName2': 'newName2'}, inplace=True)
 
 
 # подготовка структуры данных для облака слов

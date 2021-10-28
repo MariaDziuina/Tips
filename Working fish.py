@@ -159,13 +159,8 @@ g=df.groupby(['f1', 'f2']).agg(
 
 
 # соединяем два data frames
-gt=gt.merge(gt2, 'left', on=['event_number',
-                             'platform',
-                             'lang',
-                             'user_type', 
-                             'child_age', 
-                             'game_from'], 
-                suffixes=('', '_total'))
+# параметр для merge, который проще скопировать, чем написать без ошибок
+res=df1.merge(df2, 'left', on='device_id', suffixes=('_lft', '_rght'))
 
 # Отладка соединения таблиц
 pur2.groupby(['_merge']).agg(
@@ -201,8 +196,6 @@ dig["level"] = dig["level"].str.replace('Tutorial', '0')
 # максимум параметров для pivot сводная таблица
 pv=df.pivot_table(index='date', columns='dd', values='revenue', aggfunc=np.sum).fillna(0).cumsum(axis=1).reset_index()
 
-# параметр для merge, который проще скопировать, чем написать без ошибок
-res=df1.merge(df2, 'left', on='device_id', suffixes=('_lft', '_rght'))
 
 
 

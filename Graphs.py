@@ -4,13 +4,88 @@
 ###############
 ### SEABORN ###
 
-# distribution
+# если исходные данные есть в формате data frame
+
+# distribution плотность распределения
 sns.set_theme(style="darkgrid")
 tbl=intro_tbl[(intro_tbl['game_name']=='Ghosts')]
 g = sns.displot(data=tbl, x="playtime", kde=True, binwidth=1, height=7, facet_kws=dict(margin_titles=True))
 g.set(xlabel='Cutscene Time',
        ylabel='N Game Starts',
        title='Cutscene Time Distribution Ghosts')
+
+# histplot гистограмма распределения
+sns.histplot(data=abdf, x="Metric", hue="Sample")
+
+
+# bar plot с доверительными интервалами
+sns.set_theme(style="whitegrid")
+tbl=intro_tbl[(intro_tbl['platform']=='Android')]
+# Initialize the matplotlib figure
+f, ax = plt.subplots(figsize=(12, 10))
+# Plot the total crashes
+g = sns.barplot(x="child_age", y="playtime", data=tbl, palette="Set2")
+g.set_xlabel("Child Age Group")
+g.set_ylabel("Catscene Time") 
+g.set_title("Android")
+
+
+# горизонтальный boxplot 
+from pylab import rcParams
+rcParams['figure.figsize'] = 16, 15
+sns.set_theme(style="ticks", palette="pastel")
+# Draw a nested boxplot to show bills by day and time
+sns.boxplot(x="loading_time", y="game_name", orient="h"
+            , data=loading_time_all_events_and_games)
+sns.despine(offset=10, trim=True)
+
+
+# boxplot с точками для каждого наблюдения
+f, ax = plt.subplots(figsize=(7, 6))
+ax.set_xscale("linear")
+sns.boxplot(x="Metric", y="Sample", data=abdf,
+            whis=[0, 100], width=.6, palette="vlag")
+sns.stripplot(x="Metric", y="Sample", data=abdf,
+              size=4, color=".3", linewidth=0)
+# Tweak the visual presentation
+ax.xaxis.grid(True)
+sns.despine(trim=True, left=True)
+
+
+
+
+
+
+
+##################
+### MATPLOTLIB ###
+
+# линейный график с областью доверительного интервала 
+def level_interest_plot(df, title):
+    from pylab import rcParams
+    rcParams['figure.figsize'] = 15, 10
+
+    df['int']=df[['total_starts', 'share_rem']].apply(lambda x: interval_binom(x[0], x[1], 0.90), axis=1)
+    df['high']=df['share_rem']+df['int']
+    df['low']=df['share_rem']-df['int']
+
+    ax = df[['share_rem']].plot(marker='o',
+                                 label='share_rem',
+                                 title=title,
+                                 colormap='tab10',
+                                 markersize=0)
+    x_ticks = df.index
+    ax.fill_between(df.index,
+                    df['low'],
+                    df['high'],
+                    color='b',
+                    alpha=.2,
+                    lw=0,
+                    label='interval')
+    ax.set_xticks(x_ticks)
+    ax.set_ylim(ymin=0, ymax=1)
+    ax.legend()
+
 
 
 
@@ -50,10 +125,17 @@ def write_cloud(dct, file):
 
 
 
+
 #############################
 ### ВИДЕО АНИМАЦИЯ ГРАФИК ###
 
 # BAR RACING
+import plotly.express as px
+import plotly
+from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
+import plotly.graph_objs as go
+init_notebook_mode(connected=True)
+
 g['event_date']=g['event_date'].astype('str')
 g=g.sort_values(by='victory_share')
 fig = px.bar(g, y="game_name", x="victory_share", color="victory_share", orientation='h',

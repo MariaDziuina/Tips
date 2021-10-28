@@ -45,3 +45,21 @@ def write_cloud(dct, file):
     plt.tight_layout()
     plt.savefig(file, format="png")
 #     plt.show()
+
+
+
+
+
+#############################
+### ВИДЕО АНИМАЦИЯ ГРАФИК ###
+
+# BAR RACING
+g['event_date']=g['event_date'].astype('str')
+g=g.sort_values(by='victory_share')
+fig = px.bar(g, y="game_name", x="victory_share", color="victory_share", orientation='h',
+  animation_frame="event_date", animation_group="game_name")
+fig.layout.update(title_text="Victory share in days",title_font_size=30)
+fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 10000
+fig.write_html("animation_001.html")
+fig.show()
+

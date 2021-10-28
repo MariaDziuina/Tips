@@ -47,12 +47,35 @@ gd.write(url, "A_technical!A2:ZZ5000", a_df)
 gd.write(url, "B_gd!A2:ZZ5000", b_df)
 gd.write(url, "C_prod!A2:ZZ5000", c_df)
 
+
 # Загрузка csv
 coh_a.to_csv('coh_a.csv', index=False)
+
 
 # заливка в sql
 engine=get_engine()
 games_params.to_sql('game_params', con=engine, if_exists='replace', index=False, schema='dash')
+
+
+### работа с файлами ###
+# чтение текстового файла
+with open('text.txt', 'r') as f:
+    key = f.read()
+    
+# запись переменной в файл
+txt='New string'
+with open('readme.md', 'w') as f:
+    f.write(txt)
+    f.close()
+    
+# запись в json
+import json
+with open("data_file.json", "w") as write_file:
+    json.dump(data, write_file)
+# json to dataframe
+import json
+js = json.loads(strng)
+df=pd.DataFrame(js)
 
 
 

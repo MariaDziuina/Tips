@@ -52,7 +52,24 @@ ax.xaxis.grid(True)
 sns.despine(trim=True, left=True)
 
 
+# Линейный график c гистограммой
+import seaborn as sns
+sns.set_theme(style="darkgrid")
 
+def game_place_plt(game):
+    df=game_table(game)
+    fig, ax = plt.subplots(figsize=(15, 8))
+    # Plot the responses for different events and regions
+    ax = sns.lineplot(x='date', y='place',
+                 data=df, markers=True, dashes=False)
+    ax2 = ax.twinx()
+    ax2.bar('date', 'players', data=df, color="green", alpha = 0.2)
+    ax.set_xticks(df['date'])
+    ax.set_ylim(ymin=0, ymax=40)
+    ax.invert_yaxis()
+    ax.set(title=game + ' ' + 'Place Dynamic')
+    # считаем стандартное отклонение
+    return np.around(np.std(df['rating']),decimals=2)
 
 
 

@@ -143,6 +143,10 @@ prs['index']=prs.index
 # выбрать столбцы по номерам (до второго, т.е. 0 и 1)
 df1 = df.iloc[:, 0:2]
 
+# фильтр по multiply values несколько значений переменной
+cash_types=['NL', 'PLO5', 'PLO', 'MTT']
+Cash=tbl[tbl['GameType'].isin(cash_types)]
+
 #группировка и подсчет количества юзеров
 gt=ds[(ds['is_game_start']==1)].groupby(['platform',
              'lang',

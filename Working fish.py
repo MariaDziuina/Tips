@@ -106,6 +106,9 @@ panda is null
 ################################
 ### PANDAS DATA FRAMES DF ###
 
+# Отображать все колонки в таблицах
+pd.set_option('display.max_columns', None)
+
 # Информация о data frame
 print(df.info())
 
@@ -123,6 +126,9 @@ df['first_pur_date'] = pd.to_datetime(df['first_pur_date'])
 
 # переименование столбцов
 df.rename(columns={'oldName1': 'newName1', 'oldName2': 'newName2'}, inplace=True)
+
+# Считаем кол-во уникальных значений
+tbl['PlayerID'].nunique()
 
 # смена формата данных для pandas
 pd.set_option('display.float_format', lambda x: '%.3f' % x)

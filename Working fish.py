@@ -115,6 +115,12 @@ print(df.info())
 # сводная статистика по df
 df.describe()
 
+
+# убираем тех, кто пришел менее недели назад
+# взять сегодняшнюю дату
+from datetime import date, timedelta
+tbl0=tbl0[(tbl0['FirstGameTime']<=(date.today()-pd.DateOffset(7)))]
+
 #преобразование типа данных в таблице
 df['fd_starts']=df['fd_starts'].astype('float')
 df['user_id']=df['user_id'].astype('Int64')

@@ -106,6 +106,17 @@ panda is null
 ################################
 ### PANDAS DATA FRAMES DF ###
 
+# формат данных
+pd.set_option('display.float_format', lambda x: '%.3f' % x)
+pd.options.display.float_format = '${:,.2f}'.format
+df['cost'] = df['cost'].map('${:,.2f}'.format)
+
+${:,.2f}  = $100.00
+{:,.2f}% = 27.23% и вроде можно так {:,.2f%} = 27.23%
+${:,.2f} = $10,000.00
+
+
+
 # Отображать все колонки в таблицах
 pd.set_option('display.max_columns', None)
 
@@ -275,4 +286,25 @@ def interval_binom(n, p, confidence):
     # доверительный интервал биноминального распределения
     h = scipy.stats.t.interval(confidence, n-1, loc=0, scale=1)[1]*math.sqrt((p*(1-p))/n)
     return h
+
+
+
+
+
+
+
+
+
+
+reset_index(drop=True)
+multiindex level =0
+value_counts(normalize=True)
+value_counts(normalize=True).rename('HandCount')
+value_counts(dropna=False)
+unstack() vs pivot
+to_frame()
+notna()
+draw_intervals
+np.select
+
 

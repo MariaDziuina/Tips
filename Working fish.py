@@ -242,11 +242,15 @@ choices = ['got better', 'same situation', 'new exception', 'good']
 comp['Conclusion']=np.select(conditions, choices, default='no')
 comp=comp[['Platform', 'Exception', 'Exception_share', 'Exception_share_old', 'Conclusion']]
 
+
 # Преобразование столбца df в список (list)
 ages_df=prf[['child_age']].sort_values( by = ['child_age'], ascending=[True]).drop_duplicates()
 ages=ages_df['child_age'].to_list()
 
-
+# mean
+Cash_then_MTT_agg=Cash_then_MTT_daily.groupby(['PlayerID', 'IsTournament', 'IsCashAfterMTT']).agg(
+                {'GameID': lambda x: x.mean()
+                }).reset_index()
 
 
 

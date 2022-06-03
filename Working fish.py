@@ -292,7 +292,14 @@ def interval_binom(n, p, confidence):
     return h
 
 
-
+# функция, которая выдает нижнюю и верхнюю границу доверительного интервала биномиального
+def interval_binom_boarders(n, p, confidence):
+    import scipy.stats
+    import math
+    # доверительный интервал биноминального распределения
+    low = round((p-scipy.stats.t.interval(confidence, n-1, loc=0, scale=1)[1]*math.sqrt((p*(1-p))/n)), 2)*100
+    high= round((p+scipy.stats.t.interval(confidence, n-1, loc=0, scale=1)[1]*math.sqrt((p*(1-p))/n)), 2)*100
+    return print('нижняя граница {}%, верхняя граница {}%'.format(low, high))
 
 
 

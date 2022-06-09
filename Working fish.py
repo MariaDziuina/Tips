@@ -61,6 +61,12 @@ games_params.to_sql('game_params', con=engine, if_exists='replace', index=False,
 # чтение текстового файла
 with open('text.txt', 'r') as f:
     key = f.read()
+# пример    
+winrate = execute_clickhouse_query(open('query.sql').read().format('2022-03-01', '2022-04-10', 'show_conditions'))
+print('В итоговом датафрейме {} строк'.format(winrate.shape[0]))
+winrate.name = 'winrate'
+display(winrate.info())
+display(winrate.head(4))
     
 # запись переменной в файл
 txt='New string'
@@ -253,6 +259,17 @@ Cash_then_MTT_agg=Cash_then_MTT_daily.groupby(['PlayerID', 'IsTournament', 'IsCa
                 }).reset_index()
 
 
+# расчет доли по таблице
+# пример:
+fg_p=tbl0.groupby(['FirstGameType']).agg(
+                {
+                    'PlayerID': lambda x: x.nunique()
+                }).reset_index()
+# если не сработает, то добавить np.sum(fg_p['PlayerID'], axis=1). 
+# Это означает, что он будет делать это по столбцам, а не  построчкам( по строчкам = 0)
+fg_p['Share']=fg_p['PlayerID']/np.sum(fg_p['PlayerID'])
+fg_p
+
 
 ###############################
 ### ПРОЧИЕ ПОЛЕЗНЫЕ ФУНКЦИИ ###
@@ -293,12 +310,13 @@ def interval_binom(n, p, confidence):
 
 
 # функция, которая выдает нижнюю и верхнюю границу доверительного интервала биномиального
-def interval_binom_boarders(n, p, confidence):
-    import scipy.stats
-    import math
+def interval_binom_boarders(s, n, confidence):
+    import statsmodels.api as sm
+    import statsmodels.formula.api as smf
     # доверительный интервал биноминального распределения
-    low = round((p-scipy.stats.t.interval(confidence, n-1, loc=0, scale=1)[1]*math.sqrt((p*(1-p))/n)), 2)*100
-    high= round((p+scipy.stats.t.interval(confidence, n-1, loc=0, scale=1)[1]*math.sqrt((p*(1-p))/n)), 2)*100
+    b = sm.stats.proportion_confint(s, n, alpha=0.05, method='wilson')
+    low = b[0]
+    high= b[1]
     return print('нижняя граница {}%, верхняя граница {}%'.format(low, high))
 
 

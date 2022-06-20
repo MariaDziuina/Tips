@@ -133,6 +133,15 @@ print(df.info())
 df.describe()
 
 
+# быстро получить данные среднего по дням и сделать график
+sl_dyn = sessions_df.groupby(['Room', 'Date']).mean()[['SessionLengthMinutes']].reset_index()
+sns.lineplot(data=sl_dyn, 
+             x='Date', 
+             y='SessionLengthMinutes', 
+             hue='Room')
+gg = plt.xticks(rotation=45)
+
+
 # убираем тех, кто пришел менее недели назад
 # взять сегодняшнюю дату
 from datetime import date, timedelta

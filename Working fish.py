@@ -330,6 +330,56 @@ def interval_binom_boarders(s, n, confidence):
 
 
 
+# функция для расчета средневзвешенного
+def w_avg(df, values, weights):
+    d = df[values]
+    w = df[weights]
+    return (d * w).sum() / w.sum()
+
+# функция для сравнения метрик до и после и проверка на стат. значимость
+def get_metrics_and_signif(metrics, table, hue='IsExperiment', arg0=0, arg1=1
+                           , sample0name='Before', sample1name='After'):
+    
+    sample0=table[(table[hue]==arg0)]
+    sample1=table[(table[hue]==arg1)]
+    
+    lst=[]
+    df1 = pd.DataFrame()
+    s=table.reset_index().groupby(hue).agg({'index': lambda x: x.nunique()}).values
+    pl=table.reset_index().groupby(hue).agg({'PlayerID': lambda x: x.nunique()}).values
+    
+    for i in metrics:
+        m=table.groupby(hue).agg({i: lambda x: x.mean()}).values
+        mw=st.mannwhitneyu(sample1[i], sample0[i], alternative='two-sided').pvalue
+        tt=st.ttest_ind(sample1[i], sample0[i], alternative='two-sided').pvalue
+        dif=m[1,0]-m[0,0]
+        difp=100*(m[1,0]-m[0,0])/m[0,0]
+        difp_abs=abs(100*(m[1,0]-m[0,0])/m[0,0])
+        lst.append([i, m[0,0], m[1,0], dif, difp, difp_abs, mw, tt])
+
+    df1=pd.DataFrame(lst, columns=['Metrics', sample0name, sample1name, 'Diff', 'Diff%', 'Diff%_abs', 'mw', 'tt']
+                    ).sort_values(by=['mw', 'tt', 'Diff%_abs'], ascending=[True, True, False])
+    
+    new_row = {'Metrics':'SampleSize', sample0name: s[0,0], sample1name: s[1,0]}
+    df1 = df1.append(new_row, ignore_index=True)
+    new_row1 = {'Metrics':'Players', sample0name: pl[0,0], sample1name: pl[1,0]}
+    df1 = df1.append(new_row1, ignore_index=True)
+
+
+    conditions = [ (df1['mw']<0.1) & (df1['tt']<0.1) & (df1['Diff']>0),
+                  (df1['mw']<0.1) & (df1['tt']<0.1) & (df1['Diff']<=0),
+                  (df1['mw']>=0.1) & (df1['tt']<0.1),
+                  (df1['mw']<0.1) & (df1['tt']>=0.1),
+                  (df1['mw']>0.1) & (df1['tt']>0.1)
+                ]
+    choices = ['significantly raised', 'significantly reduce'
+               , 'partially significant', 'partially significant'
+               , 'not significant']
+    df1['Conclusion']=np.select(conditions, choices, default='')
+    df1=df1.drop(columns = ['Diff%_abs'],axis = 1)
+    return df1
+
+
 
 
 

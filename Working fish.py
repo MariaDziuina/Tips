@@ -142,6 +142,11 @@ print(df.info())
 df.describe()
 
 
+# процентное измение
+users=users.sort_values(by = ['subscription_type', 'month_']).reset_index(drop=True)
+users['Percentage_Change'] = users['user_id'].pct_change().round(3)*100
+
+
 # быстро получить данные среднего по дням и сделать график
 sl_dyn = sessions_df.groupby(['Room', 'Date']).mean()[['SessionLengthMinutes']].reset_index()
 sns.lineplot(data=sl_dyn, 

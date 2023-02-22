@@ -122,6 +122,15 @@ ${:,.2f}  = $100.00
 ${:,.2f} = $10,000.00
 
 
+# multi-index мультииндексы
+# удалить второй уровень индекса столбцов 
+pv.columns = pv.columns.droplevel(1)
+# строк
+df2.index = df2.index.droplevel(1)
+
+# объединить индексы столбцов
+pv.columns = pv.columns.map('|'.join).str.strip('|')
+
 
 # Отображать все колонки в таблицах
 pd.set_option('display.max_columns', None)

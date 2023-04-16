@@ -170,6 +170,14 @@ df['first_pur_date'] = pd.to_datetime(df['first_pur_date'])
   df=df[(df['first_game_played']!='Not a game')][['user_id', 'first_pur_date', 'platform','lang','child_age'
                      ]].drop_duplicates()
 
+# поиск дубликатов дублирующиеся строки
+duplicateRowsDF = timespend[timespend.duplicated(['user_id', 'app_instance_orig'])]
+duplicateRowsDF=duplicateRowsDF.sort_values(by=['user_id', 'app_instance_orig', 'timespend']
+                                           ).reset_index(drop=True)
+len(duplicateRowsDF)
+
+
+
 # переименование столбцов
 df.rename(columns={'oldName1': 'newName1', 'oldName2': 'newName2'}, inplace=True)
 

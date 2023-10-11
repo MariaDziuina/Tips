@@ -139,7 +139,42 @@ def write_cloud(dct, file):
 #     plt.show()
 
 
+######
+# plotly
+# линейный график с дов.интервалами
 
+import plotly.graph_objects as go
+
+df['conf_int_min'] = df['value'] - 2 * np.sqrt(df['value'] * (1 - df['value']) / df['auths'])
+df['conf_int_max'] = df['value'] + 2 * np.sqrt(df['value'] * (1 - df['value']) / df['auths'])
+
+fig = px.line(df, x="dt", y="value", title="Динамика конверсии с доверительным интервалом", color = 'ab_target')
+fig.add_trace(
+    go.Scatter(
+        x=df.query("ab_target == 'exp_65_group_1'")["dt"].tolist() + df.query("ab_target == 'exp_65_group_1'")["dt"].tolist()[::-1],
+        y=df.query("ab_target == 'exp_65_group_1'")["conf_int_min"].tolist() 
+            + df.query("ab_target == 'exp_65_group_1'")["conf_int_max"].tolist()[::-1],
+        fill='toself',
+        fillcolor='rgba(0, 117, 255, 0.1)',
+        line=dict(color='rgba(255, 255, 255, 0)'),
+        name="Доверительный интервал"
+    )
+)
+
+fig.add_trace(
+    go.Scatter(
+        x=df.query("ab_target == 'exp_65_group_2'")["dt"].tolist() + df.query("ab_target == 'exp_65_group_2'")["dt"].tolist()[::-1],
+        y=df.query("ab_target == 'exp_65_group_2'")["conf_int_min"].tolist() 
+            + df.query("ab_target == 'exp_65_group_2'")["conf_int_max"].tolist()[::-1],
+        fill='toself',
+        fillcolor='rgba(255, 0, 0, 0.1)',
+        line=dict(color='rgba(255, 0, 0, 0)'),
+        name="Доверительный интервал"
+    )
+)
+
+fig.update_layout(hovermode = 'x')
+fig.show()
 
 
 

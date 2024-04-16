@@ -181,6 +181,9 @@ len(duplicateRowsDF)
 # переименование столбцов
 df.rename(columns={'oldName1': 'newName1', 'oldName2': 'newName2'}, inplace=True)
 
+# задать название столбцам
+df2 = df.set_axis(['user_id', 'group'], axis=1)
+
 # Считаем кол-во уникальных значений
 tbl['PlayerID'].nunique()
 

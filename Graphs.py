@@ -1,5 +1,13 @@
 # Графики
 
+# быстрые графики
+
+# гистограмма
+import matplotlib.pyplot as plt
+plt.hist(users_android_total[users_android_total.plays_sum_time < 100000]['plays_sum_time'], density=False, histtype='bar')
+
+
+
 
 ###############
 ### SEABORN ###

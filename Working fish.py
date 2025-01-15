@@ -3,6 +3,9 @@
 import numpy as np
 import pandas as pd
 
+import seaborn as sns
+import datetime
+
 #настройки pandas, с которыми лучше почти всегда
 pd.set_option('display.max_rows', 45000)
 pd.set_option('display.max_columns', 50000)
@@ -14,14 +17,10 @@ import sys
 sys.path.append('C:\\Users\\Maria\\Documents\\Python\\analytics')
 sys.path.append('C:\\Users\\marii\\Documents\\Python\\analytics')
 
-# собственные библиотеки
-# обмен с гуглдоки
-# import ts_gd as gd
-# получение из sql
-from data_load import *
 
-import seaborn as sns
-import datetime
+
+# собственные библиотеки
+from data_load import *
 
 from pylab import rcParams
 rcParams['figure.figsize'] = 12, 9
@@ -78,13 +77,12 @@ with open('readme.md', 'w') as f:
 import json
 with open("data_file.json", "w") as write_file:
     json.dump(data, write_file)
+
 # json to dataframe
+# чтение json файла
 import json
 js = json.loads(strng)
 df=pd.DataFrame(js)
-
-
-
 
 
 ################################
@@ -102,12 +100,6 @@ df.isna().sum()
 # Работа с NULL
 df['event_time']=df['event_time'].fillna('Unknown')
 
-# Работа с NULL
-panda is null
-
-
-
-
 
 ################################
 ### PANDAS DATA FRAMES DF ###
@@ -122,7 +114,7 @@ ${:,.2f}  = $100.00
 ${:,.2f} = $10,000.00
 
 
-# multi-index мультииндексы
+### multi-index мультииндексы ###
 # удалить второй уровень индекса столбцов 
 pv.columns = pv.columns.droplevel(1)
 # строк
@@ -131,9 +123,11 @@ df2.index = df2.index.droplevel(1)
 # объединить индексы столбцов
 pv.columns = pv.columns.map('|'.join).str.strip('|')
 
-
 # Отображать все колонки в таблицах
 pd.set_option('display.max_columns', None)
+
+
+### DATAFRAME ###
 
 # Информация о data frame
 print(df.info())
@@ -141,11 +135,9 @@ print(df.info())
 # сводная статистика по df
 df.describe()
 
-
 # процентное измение
 users=users.sort_values(by = ['subscription_type', 'month_']).reset_index(drop=True)
 users['Percentage_Change'] = users['user_id'].pct_change().round(3)*100
-
 
 # быстро получить данные среднего по дням и сделать график
 sl_dyn = sessions_df.groupby(['Room', 'Date']).mean()[['SessionLengthMinutes']].reset_index()
@@ -161,14 +153,15 @@ gg = plt.xticks(rotation=45)
 from datetime import date, timedelta
 tbl0=tbl0[(tbl0['FirstGameTime']<=(date.today()-pd.DateOffset(7)))]
 
+
 #преобразование типа данных в таблице
 df['fd_starts']=df['fd_starts'].astype('float')
 df['user_id']=df['user_id'].astype('Int64')
 df['first_pur_date'] = pd.to_datetime(df['first_pur_date'])
 
+
  # убираем дубликаты
-  df=df[(df['first_game_played']!='Not a game')][['user_id', 'first_pur_date', 'platform','lang','child_age'
-                     ]].drop_duplicates()
+  df=df[['user_id', 'first_pur_date', 'platform']].drop_duplicates()
 
 # поиск дубликатов дублирующиеся строки
 duplicateRowsDF = timespend[timespend.duplicated(['user_id', 'app_instance_orig'])]
@@ -177,14 +170,13 @@ duplicateRowsDF=duplicateRowsDF.sort_values(by=['user_id', 'app_instance_orig', 
 len(duplicateRowsDF)
 
 
-
 # переименование столбцов
 df.rename(columns={'oldName1': 'newName1', 'oldName2': 'newName2'}, inplace=True)
 
 # задать название столбцам
 df2 = df.set_axis(['user_id', 'group'], axis=1)
 
-# Считаем кол-во уникальных значений
+# cчитаем кол-во уникальных значений
 tbl['PlayerID'].nunique()
 
 # смена формата данных для pandas
@@ -192,7 +184,7 @@ pd.set_option('display.float_format', lambda x: '%.3f' % x)
 pd.options.display.float_format = '${:,.2f}'.format
 df['cost'] = df['cost'].map('${:,.2f}'.format)
 
-# Смена индекса
+# cмена индекса
 prs=prf.sort_values(by=['game_time'], 
                   ascending=[True]).reset_index()
 prs['index']=prs.index
@@ -224,10 +216,10 @@ g=df.groupby(['f1', 'f2']).agg(
                 }).reset_index().sort_values(by='id', ascending=False)
 
 
-
 # соединяем два data frames
 # параметр для merge, который проще скопировать, чем написать без ошибок
 res=df1.merge(df2, 'left', on='device_id', suffixes=('_lft', '_rght'))
+
 
 # Отладка соединения таблиц
 pur2.groupby(['_merge']).agg(
@@ -246,19 +238,15 @@ len(t[(t['transaction_time']>1)])
 
 # сортировка
 gt=gt.sort_values(by=['event_number',
-                      'platform',
-                      'lang',
-                      'user_type', 
-                      'child_age', 
-                      'game_from'], 
-                  ascending=[True, False, False, False, True, False])
+                      'platform'], 
+                  ascending=[True, False])
 
 # Заменить значения в столбце
 dig["level"] = dig["level"].str.replace('Tutorial', '0')
 
 
 
-### сводные таблицы pivot ###
+### СВОДНЫЕ ТАБЛИЦЫ PIVOT ###
 
 # максимум параметров для pivot сводная таблица
 pv=df.pivot_table(index='date', columns='dd', values='revenue', aggfunc=np.sum).fillna(0).cumsum(axis=1).reset_index()
@@ -267,7 +255,7 @@ pv=df.pivot_table(index='date', columns='dd', values='revenue', aggfunc=np.sum).
 
 
 
-### создание новых переменных ###
+### СОЗДАНИЕ НОВЫХ ПЕРЕМЕННЫХ ###
 
 #рассчет доли и создание нового столбца на основе двух
 gt['share']=gt['user_id']/gt['user_id_total']
@@ -303,6 +291,8 @@ fg_p=tbl0.groupby(['FirstGameType']).agg(
 # Это означает, что он будет делать это по столбцам, а не  построчкам( по строчкам = 0)
 fg_p['Share']=fg_p['PlayerID']/np.sum(fg_p['PlayerID'])
 fg_p
+
+
 
 
 ###############################
@@ -361,6 +351,7 @@ def w_avg(df, values, weights):
     w = df[weights]
     return (d * w).sum() / w.sum()
 
+
 # функция для сравнения метрик до и после и проверка на стат. значимость
 def get_metrics_and_signif(metrics, table, hue='IsExperiment', arg0=0, arg1=1
                            , sample0name='Before', sample1name='After'):
@@ -403,8 +394,6 @@ def get_metrics_and_signif(metrics, table, hue='IsExperiment', arg0=0, arg1=1
     df1['Conclusion']=np.select(conditions, choices, default='')
     df1=df1.drop(columns = ['Diff%_abs'],axis = 1)
     return df1
-
-
 
 
 

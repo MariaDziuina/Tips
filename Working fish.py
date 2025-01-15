@@ -100,6 +100,9 @@ df.isna().sum()
 # Работа с NULL
 df['event_time']=df['event_time'].fillna('Unknown')
 
+# считаем доли нулей в столбцах
+df_join.isnull().mean()
+
 
 ################################
 ### PANDAS DATA FRAMES DF ###

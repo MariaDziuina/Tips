@@ -215,6 +215,12 @@ g=df.groupby(['f1', 'f2']).agg(
                     'revenue': np.sum
                 }).reset_index().sort_values(by='id', ascending=False)
 
+# еще один вариант сгруппировать данные
+top_3_revenue = (
+    df_sales_detail
+    .groupby('good')['price'].sum()
+    .sort_values()[-3:].index.tolist()
+)
 
 # соединяем два data frames
 # параметр для merge, который проще скопировать, чем написать без ошибок

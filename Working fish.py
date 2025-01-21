@@ -253,6 +253,11 @@ gt=gt.sort_values(by=['event_number',
 # Заменить значения в столбце
 dig["level"] = dig["level"].str.replace('Tutorial', '0')
 
+# задать условия на замену нескольких значений в столбце
+d = {'No' : False, 'Yes' : True}
+df['International plan'] = df['International plan'].map(d)
+df.head()
+
 
 
 ### СВОДНЫЕ ТАБЛИЦЫ PIVOT ###

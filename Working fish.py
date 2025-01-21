@@ -129,6 +129,9 @@ pv.columns = pv.columns.map('|'.join).str.strip('|')
 # Отображать все колонки в таблицах
 pd.set_option('display.max_columns', None)
 
+# добавить бинарный признак
+df['Many_service_calls'] = (df['Customer service calls'] > 3).astype('int')
+
 
 ### DATAFRAME ###
 
@@ -254,6 +257,12 @@ d = {'No' : False, 'Yes' : True}
 df['International plan'] = df['International plan'].map(d)
 df.head()
 
+
+### ТАБЛИЦЫ СОПРЯЖЕННОСТИ ###
+
+pd.crosstab(df['Churn'], df['International plan'])
+# либо
+pd.crosstab(df['Churn'], df['Voice mail plan'], normalize=True)
 
 
 ### СВОДНЫЕ ТАБЛИЦЫ PIVOT ###

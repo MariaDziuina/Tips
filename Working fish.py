@@ -210,6 +210,10 @@ g=df.groupby(['f1', 'f2']).agg(
 columns_to_show = ['Total day minutes', 'Total eve minutes', 'Total night minutes']
 df.groupby(['Churn'])[columns_to_show].describe(percentiles=[])
 
+# еще один вариант группировки с выводом определенных статистик
+columns_to_show = ['Total day minutes', 'Total eve minutes', 'Total night minutes']
+df.groupby(['Churn'])[columns_to_show].agg([np.mean, np.std, np.min, np.max])
+
 # еще один вариант сгруппировать данные
 top_3_revenue = (
     df_sales_detail

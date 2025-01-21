@@ -200,23 +200,15 @@ cash_types=['NL', 'PLO5', 'PLO', 'MTT']
 Cash=tbl[tbl['GameType'].isin(cash_types)]
 
 #группировка и подсчет количества юзеров
-gt=ds[(ds['is_game_start']==1)].groupby(['platform',
-             'lang',
-             'user_type', 
-             'child_age', 
-             'game_from', 
-             'event_number',
-             'game_name']).agg(
-                {
-                    'user_id': lambda x: x.nunique(),
-                }).reset_index()
-
-# более сложная группировка 
 g=df.groupby(['f1', 'f2']).agg(
                 {
                     'id': lambda x: x.nunique(),
                     'revenue': np.sum
                 }).reset_index().sort_values(by='id', ascending=False)
+
+# группировка по какому-то признаку и вывод основных статистик
+columns_to_show = ['Total day minutes', 'Total eve minutes', 'Total night minutes']
+df.groupby(['Churn'])[columns_to_show].describe(percentiles=[])
 
 # еще один вариант сгруппировать данные
 top_3_revenue = (

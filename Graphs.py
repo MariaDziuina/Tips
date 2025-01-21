@@ -1,15 +1,43 @@
-# Графики
+###################################
+##########   Графики    ###########
+###################################
 
-# быстрые графики
+
+# прежде чем начать:
+# отключим предупреждения Anaconda
+import warnings
+warnings.simplefilter('ignore')
+
+# будем отображать графики прямо в jupyter'e
+%matplotlib inline
+import seaborn as sns
+import matplotlib.pyplot as plt
+#графики в svg выглядят более четкими
+%config InlineBackend.figure_format = 'svg' 
+
+#увеличим дефолтный размер графиков
+from pylab import rcParams
+rcParams['figure.figsize'] = 8, 5
+import pandas as pd
+
+########################
+
+### БЫСТРЫЕ ГРАФИКИ ###
+
+# график продаж видео игр в различных странах в зависимости от года (линейный график по времени)
+sales_df = df[[x for x in df.columns if 'Sales' in x] + ['Year_of_Release']]
+sales_df.groupby('Year_of_Release').sum().plot()
 
 # гистограмма
 import matplotlib.pyplot as plt
 plt.hist(users_android_total[users_android_total.plays_sum_time < 100000]['plays_sum_time'], density=False, histtype='bar')
 
+# 
+sales_df.groupby('Year_of_Release').sum().plot(kind='bar', rot=45)
 
 
 
-###############
+#######################
 ### SEABORN ###
 
 # если исходные данные есть в формате data frame
